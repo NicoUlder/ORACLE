@@ -1,0 +1,38 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cálculo IMC</title>
+</head>
+<body>
+	<h1>Cálculo IMC</h1>
+	<script>
+		let peso = 85;
+		let altura = 1.98;
+
+		const imprimir = (text) => {
+			document.write(text)
+			document.write("<br>")
+		}
+
+		const calcIMC = () => {
+			imc = Math.round(peso / (altura**2));
+			if (imc < 18.5) {
+				imprimir("Mi IMC es " + imc + " = INSUFICIENCIA PONDERAL");
+			} else if (imc === 18.5 || imc <= 24.9) {
+				imprimir("Mi IMC es " + imc + " = INTERVALO NORMAL");
+			} else if (imc >= 25) {
+				imprimir("Mi IMC es " + imc + " = SOBREPESO");
+			} else if (imc >= 30) {
+				imprimir("Mi IMC es " + imc + " = OBESIDAD");
+			} else {
+				imprimir("Mi IMC es " + imc + " = OBESIDAD MORBIDA");
+			}
+		}
+
+		calcIMC();
+
+	</script>
+	
+</body>
+</html>

@@ -1,0 +1,35 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EJERCICIO FINAL LOGICA 2</title>
+</head>
+
+<body>
+    <h1>My Recipes</h1>
+    <script>
+    var ingredients = new Array();
+    var qty = parseInt(prompt("How many ingredients are you going to add?"));
+    var count = 1;
+
+    while (count <= qty) {
+        let ingredient = prompt("Add ingredient #" + count);
+        let exist = false;
+        for (let i = 0; i < ingredients.length; i++) {
+            if (ingredients[i] == ingredient) {
+                exist = true;
+                alert(ingredient + " is a duplicate.");
+                break;
+            }
+        }
+        if (exist == false) {
+            ingredients.push(ingredient);
+            count++;
+        }
+    }
+    console.log(ingredients);
+    </script>
+</body>
+
+</html>

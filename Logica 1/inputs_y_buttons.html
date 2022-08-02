@@ -1,0 +1,38 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo IMC</title>
+</head>
+
+<body>
+    <h1>Guess the secret numbers</h1>
+    <input />
+    <button>Check number</button>
+    <script>
+    //let secret = Math.round(Math.random() * 10);
+    let secret = [3, 6, 9];
+    let input = document.querySelector("input");
+    let found = false;
+    input.focus();
+    const verify = () => {
+        for (let i = 0; i < secret.length; i++) {
+            if (parseInt(input.value) === secret[i]) {
+                alert("You guessed it.");
+                found = true;
+                break;
+            }
+        }
+        if (found == false) {
+            alert("Nope.")
+        }
+        input.value = "";
+        input.focus();
+    }
+    let button = document.querySelector("button");
+    button.onclick = verify; // sin paréntesis para que chequee al momento de hacer click y no cargue todo el código y haga la comparación de inmediato antes del click
+    </script>
+</body>
+
+</html>
