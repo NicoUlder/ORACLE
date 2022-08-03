@@ -211,7 +211,7 @@
 
         for (let i of inputAll) {
           if (i.value == "") {
-            return "Sorry, you need to fill in all fields.";
+            return alert("Sorry, you need to fill in all fields.");
           }
           rectangle.push(Number(i.value));
         }
@@ -225,7 +225,7 @@
         let screen = document.querySelector("canvas");
         let brush = screen.getContext("2d");
 
-        var colorBg = document.getElementById("bgcolor").value; //use .value to get (num) color code
+        var colorBg = document.getElementById("bgcolor").value; //use .value to get numeric color code
         var colorBrdr = document.getElementById("brdrcolor").value;
 
         brush.fillStyle = colorBg;

@@ -33,12 +33,12 @@
       }
 
       function dibujarBarra(x, y, serie, colores, texto) {
-        escribirTexto(x, y - 10, texto);
-        let sum = 0;
+        escribirTexto(x, y - 10, texto); //graphic bar gets created by adding the sum to the 'y' axis
+        let sum = 0; //initialize
         for (let i = 0; i < serie.length; i++) {
           let altura = serie[i];
-          dibujarRectangulo(x, y + sum, 50, altura, colores[i]);
-          sum += altura;
+          dibujarRectangulo(x, y + sum, 50, altura, colores[i]); //rectangle gets created by adding its size to the y axis until reaching 100%
+          sum += altura; //sum of both heights
         }
       }
 
