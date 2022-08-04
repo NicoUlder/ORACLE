@@ -1,0 +1,39 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas width="600" height="400"></canvas>
+    <script>
+        var screen = document.querySelector("canvas"); //select canvas
+        var brush = screen.getContext("2d"); //select 2d form
+        var pageWidth = document.body.offsetWidth;
+
+        brush.fillStyle = "lightgrey"; //set fill color
+        brush.fillRect(0, 0, 600, 400); //set x/y position and fill canvas
+
+        const showCircle = (x, y, radius) => {
+            brush.fillStyle = "blue";
+            brush.beginPath();
+            brush.arc(x, y, radius, 0, 2 * Math.PI);
+            brush.fill();
+        }
+
+        const clearCircle = () => {
+            brush.clearRect(0, 0, 600, 400);
+        }
+
+        var x = 0;
+        const refreshScreen = () => {
+            clearCircle();
+            showCircle(x, 20, 10);
+            x++;
+        }
+
+        setInterval(refreshScreen, 5);
+    </script>
+</body>
+</html>
