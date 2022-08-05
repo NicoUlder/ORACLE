@@ -1,0 +1,242 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>STONE AGE PIXEL ART GENERATOR</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --red: rgb(230, 7, 7);
+        --white: rgb(255, 255, 240);
+        --black: rgb(0, 0, 0);
+        --colorShadeA: rgb(106, 163, 137);
+        --colorShadeB: rgb(121, 186, 156);
+        --colorShadeC: rgb(150, 232, 195);
+        --colorShadeD: rgb(187, 232, 211);
+        --colorShadeE: rgb(205, 255, 232);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        background-image: url("bg.jpg");
+        background-color: var(--white); /* fallback */
+        background-size: auto;
+        font-family: "Orbitron", sans-serif;
+        text-shadow: .3125rem .3125rem .4375rem var(--black);
+        padding: 0.3125rem 1.25rem 0 1.25rem;
+      }
+
+      h1 {
+        font-family: "Orbitron", sans-serif;
+        font-size: 2rem;
+        text-shadow: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
+        background: -webkit-linear-gradient(var(--white), var(--red));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        /* fallback */
+        background-clip: text;
+      }
+
+      h6 {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 0.75rem;
+        text-align: end;
+        padding: 0 0.625rem 0 0;
+        margin-bottom: 0;
+      }
+
+      input {
+        font-family: "Orbitron", sans-serif;
+        width: 3.75rem;
+        height: 1.25rem;
+        border-bottom: 0.125rem solid;
+        border-left: 0;
+        border-top: 0;
+      }
+
+      #movelog {
+        padding-top: .625rem;
+      }
+
+      #wrapper {
+        position: relative;
+        width: 19.6875rem;
+        height: 13.4375rem;
+        cursor: crosshair;
+      }
+      #canvasBottom {
+        position: absolute;
+        top: 0;
+        left: 0;
+        border: 0.0625rem solid var(--red);
+      }
+      #canvasTop {
+        position: absolute;
+        top: 0.9375rem;
+        left: 0.9375rem;
+        border: 0.0625rem solid var(--red);
+      }
+      #btn,
+      #rst {
+        border-top: 0;
+        border-left: 0;
+        font-family: inherit;
+        text-transform: uppercase;
+        vertical-align: middle;
+      }
+
+      button.big-button {
+        padding: 1em 2em;
+        border: .125rem solid var(--colorShadeA);
+        border-radius: 1em;
+        background: var(--colorShadeE);
+        transform-style: preserve-3d;
+        transition: all 175ms cubic-bezier(0, 0, 1, 1);
+      }
+      button.big-button::before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--colorShadeC);
+        border-radius: inherit;
+        box-shadow: 0 0 0 .125rem var(--colorShadeB),
+          0 0.75em 0 0 var(--colorShadeA);
+        transform: translate3d(0, 0.75em, -1em);
+        transition: all 175ms cubic-bezier(0, 0, 1, 1);
+      }
+
+      button.big-button:hover {
+        background: var(--colorShadeD);
+        transform: translate(0, 0.375em);
+      }
+
+      button.big-button:hover::before {
+        transform: translate3d(0, 0.75em, -1em);
+      }
+
+      button.big-button:active {
+        transform: translate(0em, 0.75em);
+      }
+
+      button.big-button:active::before {
+        transform: translate3d(0, 0, -1em);
+
+        box-shadow: 0 0 0 .125rem var(--colorShadeB),
+          0 0.25em 0 0 var(--colorShadeB);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>STONE AGE PIXEL ART GENERATOR</h1>
+    <h6>by Nicolas Adrian Medone</h6>
+    <form id="pixelForm">
+      v-pos: <input type="number" id="vpos" class="input-all" /> h-pos:
+      <input type="number" id="hpos" class="input-all" /> width:
+      <input type="number" id="width" class="input-all" /> height:
+      <input type="number" id="height" class="input-all" />
+      bg-color:
+      <input type="color" id="bgcolor" class="input-all" /> border-color:
+      <input type="color" id="brdrcolor" class="input-all" />
+      <p>
+        <button id="btn" class="big-button">Pixelize!</button>
+        <button id="rst" class="big-button" value="Reset" onClick="clearAll()">
+          Reset
+        </button>
+      </p>
+    </form>
+    <p id="movelog">Move mouse over canvas</p>
+    <div id="wrapper">
+      <canvas id="canvasBottom" width="815" height="715"></canvas>
+      <canvas id="canvasTop" width="800" height="700"></canvas>
+    </div>
+    <script>
+      var canvas = document.getElementById("canvasTop");
+      var canv = canvas.getContext("2d");
+      var canvas2 = document.getElementById("canvasBottom");
+      var canv2 = canvas2.getContext("2d");
+
+      canv2.beginPath();
+      for (let i = 0; i < canvas.width; i += 10) {
+        //iterate thru all canvas width and draw every (x)
+        let y = i / 100 == parseInt(i / 100) ? 0 : 10;
+        canv2.moveTo(i + 15, y);
+        canv2.lineTo(i + 15, 15);
+        let x = i / 100 == parseInt(i / 100) ? 0 : 10;
+        canv2.moveTo(x, i + 15);
+        canv2.lineTo(15, i + 15);
+      }
+      canv2.stroke();
+
+      var canvasOffset = $("#canvasTop").offset(); //get offset from html #canvasTop (jQuery)
+      var offsetX = canvasOffset.left; //set offset coords
+      var offsetY = canvasOffset.top;
+
+      const handleMouseMove = (e) => {
+        //get mouse coords
+        mouseX = parseInt(e.clientX - offsetX);
+        mouseY = parseInt(e.clientY - offsetY);
+        $("#movelog").html("Mouse: " + mouseX + " / " + mouseY); //print mouse coords (jQuery)
+      };
+
+      $("#canvasTop").mousemove(function (e) {
+        handleMouseMove(e);
+      });
+
+      const add = (e) => {
+        e.preventDefault(); //prevents input values to get discarded after submitting
+        var inputAll = document.querySelectorAll(".input-all"); //select every input value with this class
+        var rectangle = new Array();
+
+        for (let i of inputAll) {
+          if (i.value == "") {
+            return alert("Sorry, you need to fill in all fields.");
+          }
+          rectangle.push(Number(i.value));
+        }
+        drawYellowRect(rectangle);
+      };
+
+      const btn = document.getElementById("btn");
+      btn.addEventListener("click", add);
+
+      const drawYellowRect = (values) => {
+        let screen = document.querySelector("canvas");
+        let brush = screen.getContext("2d");
+
+        var colorBg = document.getElementById("bgcolor").value; //use .value to get numeric color code
+        var colorBrdr = document.getElementById("brdrcolor").value;
+
+        brush.fillStyle = colorBg;
+        brush.fillRect(...values);
+        brush.strokeStyle = colorBrdr;
+        brush.strokeRect(...values);
+      };
+
+      const clearAll = () => {
+        document.getElementById("pixelForm").reset();
+      };
+    </script>
+  </body>
+</html>
